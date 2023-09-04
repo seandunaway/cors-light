@@ -33,4 +33,4 @@ server.on('request', async function (request, response) {
     response.end(await fetch_text)
 })
 
-// @todo proxy method and body
+// @todo method and body
