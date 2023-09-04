@@ -32,7 +32,7 @@ server.on('request', async function (request, response) {
     let fetch_text = await fetch_response.text()
 
     response.statusCode = fetch_response.status
-    response.end(await fetch_text)
+    response.end(fetch_text)
 })
 
 // @todo method and body
