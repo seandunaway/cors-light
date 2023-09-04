@@ -47,4 +47,4 @@ server.on('request', async function (request, response) {
     console.info(response.statusCode, url)
 })
 
-// @todo method and body
+// @todo body
