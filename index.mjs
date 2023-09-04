@@ -30,6 +30,8 @@ server.on('request', async function (request, response) {
     console.info(url)
     let fetch_response = await fetch(url)
     let fetch_text = await fetch_response.text()
+
+    response.statusCode = fetch_response.status
     response.end(await fetch_text)
 })
 
