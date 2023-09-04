@@ -28,8 +28,8 @@ server.on('request', async function (request, response) {
     }
 
     let host
-    let url_match = url.match(/\/\/(.+?)\//)
-    if (url_match) host = url_match[1]
+    let host_match = url.match(/\/\/(.+?)\//)
+    if (host_match) host = host_match[1]
 
     let fetch_options = {
         method: request.method,
