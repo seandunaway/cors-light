@@ -15,7 +15,7 @@ server.on('listening', function () {
 })
 
 server.on('request', async function (request, response) {
-    if (!request.url) return false
+    if (!request.url || !request.method) return
 
     let url = request.url.slice(1, request.url.length)
     for (let item of whitelist) {
