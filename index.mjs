@@ -20,19 +20,31 @@ server.on('request', async function (request, response) {
     let url = request.url.slice(1, request.url.length)
     for (let item of whitelist) {
         if (!url.startsWith(item)) {
-            console.error('!', url)
             response.statusCode = 403
             response.end()
+            console.error('!', url)
             return
         }
     }
 
-    console.info(url)
-    let fetch_response = await fetch(url)
-    let fetch_text = await fetch_response.text()
+    let host
+    let url_match = url.match(/\/\/(.+?)\//)
+    if (url_match) host = url_match[1]
+
+    let fetch_options = {
+        method: request.method,
+        headers: {
+            ...request.headers,
+            host,
+        },
+    }
+
+    let fetch_response = await fetch(url, fetch_options)
+    let fetch_body = await fetch_response.text()
 
     response.statusCode = fetch_response.status
-    response.end(fetch_text)
+    response.end(fetch_body)
+    console.info(response.statusCode, url)
 })
 
 // @todo method and body
