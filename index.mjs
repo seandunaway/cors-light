@@ -2,12 +2,12 @@
 
 import {createServer} from 'node:http'
 
-let whitelist = [
+const whitelist = [
     'https://query1.finance.yahoo.com/v8/finance/chart/',
 ]
 
-let port = process.argv[2] ?? 8888
-let server = createServer()
+const port = process.argv[2] ?? 8888
+const server = createServer()
 server.listen(port)
 
 server.on('listening', function () {
@@ -17,8 +17,8 @@ server.on('listening', function () {
 server.on('request', async function (request, response) {
     if (!request.url || !request.method) return
 
-    let url = request.url.slice(1, request.url.length)
-    for (let item of whitelist) {
+    const url = request.url.slice(1, request.url.length)
+    for (const item of whitelist) {
         if (!url.startsWith(item)) {
             response.statusCode = 403
             response.end()
@@ -28,19 +28,15 @@ server.on('request', async function (request, response) {
     }
 
     let host
-    let host_match = url.match(/\/\/(.+?)\//)
+    const host_match = url.match(/\/\/(.+?)\//)
     if (host_match) host = host_match[1]
 
-    let fetch_options = {
-        method: request.method,
-        headers: {
-            ...request.headers,
-            host,
-        },
-    }
+    let fetch_options = {method: request.method}
+    fetch_options.headers = request.headers
+    fetch_options.headers.host = host
 
-    let fetch_response = await fetch(url, fetch_options)
-    let fetch_body = await fetch_response.text()
+    const fetch_response = await fetch(url, fetch_options)
+    const fetch_body = await fetch_response.text()
 
     response.statusCode = fetch_response.status
     response.end(fetch_body)
